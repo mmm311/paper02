@@ -1,4 +1,5 @@
-from mode.Task import Task
+
+from model.Task import Task
 import random
 import config.constant as constant
 
