@@ -15,8 +15,8 @@ class Task:
 
         # 执行虚拟机
         self.vm = 0
-        # 服务时间
-        self.service_time = 0
+        # # 服务时间
+        # self.service_time = 0
         # 分配时间
         self.allocate_time = 0
         # 开始时间
