@@ -9,7 +9,8 @@ class FATOS:
 
 
     '''
-    实现延迟备份，当service_time <allocate_time 时延迟备份主要有两种场景
+    实现延迟备份,遍历候选虚拟机找出最佳虚拟机和资源。
+    当service_time <allocate_time 时延迟备份主要有两种场景
     场景1：service_time < allocate_time <= 2 * service_time 时，backup部分和
     primary 执行 
     场景2： service_time * 2 < allocate_time 时，backup 等primary执行完成再执行
@@ -25,7 +26,7 @@ class FATOS:
         allocate_time = task.allocate_time
         for vm in vms:
             service_time = task.work_load / vm.cu
-            task.service_time = service_time
+            task.service_time = task.receive_time + service_time + task.transmit_time
             if allocate_time > service_time:
                 if service_time <= allocate_time < 2 * service_time:
                     resource = self.replication_case1(task, vm)
@@ -45,12 +46,11 @@ class FATOS:
     @:param task 任务
     @:param vm 虚拟机
     @:return 对于 vm(k)实现延迟备份第一种场景的需要的资源
-
     '''
     def replication_case1(self, task, vm):
         cu = vm.cu
         service_time = task.service_time
-        replication_num = self.reliability_vm(service_time)
+        replication_num = self.replication_num(service_time)
         num_primary = replication_num / 2
         num_backup = replication_num - num_primary
         probality01 = 1 - math.pow((1 - FATOS.reliability_vm(service_time)), num_primary)
@@ -73,7 +73,7 @@ class FATOS:
     def replication_case2(self, task, vm):
         cu = vm.cu
         service_time = task.service_time
-        replication_num = self.reliability_vm(service_time)
+        replication_num = self.replication_num(service_time)
         num_primary = replication_num / 2
         probality01 = 1 - math.pow(1 - FATOS.reliability_vm(service_time), num_primary)
         resource01 = num_primary * service_time * cu
