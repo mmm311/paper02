@@ -1,8 +1,8 @@
-class Server:
+class Host:
     # 默认服务器的cu为64
     cus = 64
 
-    # 物理服务器最低利用率
+    # 主机最低利用率
     low_rate = 0.25
 
     def __init__(self):
@@ -10,7 +10,10 @@ class Server:
         self.cu_used = 0
 
         # 未使用cu的个数，初始值为64
-        self.cu_unused = Server.cus
+        self.cu_remain = Host.cus
+
+        # host上面的虚拟机
+        self.vms = []
 
     '''
     @:param
@@ -23,8 +26,8 @@ class Server:
     @:param
     获取尚未使用的cu的数量
     '''
-    def get_cu_unused(self):
-        return self.cu_unused
+    def get_cu_remain(self):
+        return self.cu_remain
 
     '''
     @:param cu_used 已经使用cu的数量
@@ -32,14 +35,14 @@ class Server:
     '''
     def update_cu(self, cu_used):
         self.cu_used = cu_used
-        self.cu_unused = Server.cus - self.cu_used
+        self.cu_remain = Host.cus - self.cu_used
 
     '''
     @:param
     如果物理服务器的利用率低于阈值，则该服务器可能会被注销
     '''
     def cancel_server(self):
-        if self.cu_used <= Server.cus * Server.low_rate:
+        if self.cu_used <= Host.cus * Host.low_rate:
             return True
         else:
             return False
