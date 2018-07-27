@@ -21,7 +21,11 @@ class Task:
         self.allocate_time = 0
         # 开始时间
         self.start_time = 0
+        # 接受时间
+        self.receive_time = 0
         # 执行时间
         self.exc_time = 0
+        # 传输时间
+        self.transmit_time = 0
         # 结束时间
         self.end_time = 0
