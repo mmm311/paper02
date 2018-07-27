@@ -33,3 +33,18 @@ DEADTIME = 200
 # 单位能耗
 ENERGY = 1
 
+# vm 失败参数
+VM_FAULT = 1
+
+# host 失败参数
+HOST_FAULT = 1
+
+# 恢复时间
+RECOVERY = 60
+
+# checkpoint 时间
+CHECKPOINT = 10
+
+# 一个任务最大分成块数
+MAX_CHUNK = 1000
+
